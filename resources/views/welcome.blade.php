@@ -67,22 +67,11 @@
     </head>
     <body>
         <div class="flex-center position-ref full-height">
-            {{-- @if (Route::has('login'))
-                <div class="top-right links">
-                    @auth
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ route('login') }}">Login</a>
-                        <a href="{{ route('register') }}">Register</a>
-                    @endauth
-                </div>
-            @endif --}}
-
             <div class="content">
                 <div class="title m-b-md">
                     Laravel test <hr>
                     @auth
-                        Hello {{ Auth::user()->name }}, Yaww you are at the right place noww bruhh!
+                        Hello {{ Auth::user()->name }}, Congratulation! Welcome to the party.
                     @else
                         You're not login yet so please do so to join the party...
                     @endauth
@@ -92,7 +81,17 @@
                         <a href="/home">Home by Laravel</a>
                         <a href="{{ route('company-listing') }}">Company Page</a>
                         <a href="{{ route('employee-listing') }}">Employee Page</a>
-                        <a href="{{ route('auth-logout') }}">Logout</a>
+                        {{-- manual logout --}}
+                        {{-- <a href="{{ route('auth-logout') }}">Logout</a> --}}
+                        <a 
+                            href="{{ route('logout') }}" 
+                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            {{ __('Logout')}}
+                        </a>
+
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none">
+                            @csrf
+                        </form>
                     @else
                         <a href="/">Home</a>
                         <a href="/login">Login</a>

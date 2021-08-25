@@ -28,7 +28,8 @@
     </div>
     <div class="form-group">
       <label for="logo">Company Logo</label>
-      <input type="file" class="form-control-file" name="logo" value="{{ $company->logo }}">
+      <input type="file" class="form-control-file mb-3" name="logo" value="{{ $company->logo }}">
+      <img src="{{ asset("storage/$company->logo") }}" alt="{{$company->logo}}" style="border-radius: 8px;" width="300">
     </div>
     <div class="form-group">
       <label for="website">Company Website</label>

@@ -36,7 +36,9 @@
               <th scope="row">{{ $company->id }}</th>
               <td>{{ $company->name }}</td>
               <td>{{ $company->email }}</td>
-              <td><img src="{{ asset("storage/$company->logo") }}" alt="{{$company->logo}}" style="border-radius: 8px;" width="300"></td>
+              <td>
+                <img src="{{ asset("storage/$company->logo") }}" alt="{{$company->logo}}" style="border-radius: 8px;" width="300">
+              </td>
               <td>{{ $company->website }}</td>
               @auth
                 @if ((Auth::user()->name) === 'Admin')
