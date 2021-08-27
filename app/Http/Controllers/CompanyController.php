@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Company;
+use App\Http\Requests\CompanyRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\File;
@@ -23,17 +24,33 @@ class CompanyController extends Controller
 		return view('company.create');
 	}
 
-    // store data into database
-    public function store( Request $request ) {
-        //dd($request);
-        $request->validate([
-            'name' => 'required',
-            'email' => 'required|email',
-        ]);
+    /* store data into database */
+    // Method 1: use Request 
+    // public function store( Request $request ) {
+    //     //dd($request);
+    //     $request->validate([
+    //         'name' => 'required',
+    //         'email' => 'required|email',
+    //     ]);
 
+    //     $company = Company::create($request->all());
+
+    //     // store logo image
+    //     if($request->has('logo')){
+    //         $company->update([ 'logo' => $request->file('logo')->store('images', 'public') ]);
+    //     }
+
+    //     return redirect()->route('company-listing')->with('success', 'Company has been created successfully.');
+    // }
+
+    // Method 2: use CompanyRequest
+    public function store(CompanyRequest $request) {
+        // validate only what has been defined in CompanyRequest
+        $request->validated();
+
+        // store validated data as a new record
         $company = Company::create($request->all());
 
-        // store logo image
         if($request->has('logo')){
             $company->update([ 'logo' => $request->file('logo')->store('images', 'public') ]);
         }
@@ -49,37 +66,15 @@ class CompanyController extends Controller
         ]);
     }
 
-    public function update(Request $request, $id) {
+    public function update(CompanyRequest $request, $id) {
         $company = Company::findOrFail($id);
-
-        $validated_data = $request->validate([
-            'name' => 'required',
-            'email' => 'required|email'
-        ]);
 
         $company->name = $request->name;
         $company->email = $request->email;
-        $company->logo = $request->logo;
         $company->website = $request->website;
-
-        // $val = Validator:make($request->all, [
-        //     'imgUpload1' => 'required',
-        // ]);
-
-        // if($val->fails()) {
-        // return redirect()->back()->with(['message' => 'No file received']);
-        // }
-        // else {
-        //     $file = $request->file('imgUpload1')->store('images');
-        //     return redirect()->back();
-        // }
-
         
         if($request->has('logo')){
-            // $request->photo->store('images', 'public');
-            $company->logo = $request->file('logo')->store('images', 'public');
-            // $company->update([ 'logo' => $request->file('logo')->store('images', 'public') ]);
-            // Storage::putFile('logo', new File('/app/to/photo'), 'public');
+            $company->update([ 'logo' => $request->file('logo')->store('images', 'public') ]);
         }
 
         $company->save();

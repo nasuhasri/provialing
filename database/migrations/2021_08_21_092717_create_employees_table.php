@@ -27,6 +27,8 @@ class CreateEmployeesTable extends Migration
         Schema::table('employees', function (Blueprint $table) {
             $table->unsignedInteger('comp_id');
 
+            // set null here..
+
             $table->foreign('comp_id')
                 ->references('id')->on('companies')
                 ->onDelete('cascade');
